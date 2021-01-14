@@ -34,12 +34,15 @@ Route::group(['middleware' => ['guest']], function () {
     });
 });
 
-Route::group(['prefix' => 'teacher', 'middleware' => ['teacher']], function () {
+  Route::group(['prefix' => 'teacher', 'middleware' => ['teacher']], function () {
     Route::get('/dashboard', 'Home\home@teacherDashboard');
     Route::get('/logout', 'Auth\LoginController@logout');
 
     //profile
     Route::get('/profile', 'User\LoginUserController@getProfile');
+    Route::post('/profile/{user_id}', 'User\LoginUserController@updateProfileDetail');
+    Route::post('/profile/{user_id}/password', 'User\LoginUserController@updatePassword');
+
     Route::get('/api/teacher_list', 'Course\CourseController@teacherList');
 
     //---course
@@ -84,10 +87,12 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['teacher']], function () {
                 Route::get('/board/', 'Course\ScheduleController@getBoard');
                 Route::post('/board/save', 'Course\ScheduleController@saveBoard');
 
-                Route::get('/whiteboard', 'Course\ScheduleController@viewWhiteboard');
-                Route::get('/whiteboard/get', 'Course\ScheduleController@getBoard');
-                Route::post('/whiteboard/save', 'Course\ScheduleController@saveBoard');
-                Route::get('/whiteboard/download', 'Course\ScheduleController@downloadBoard');
+                
+                Route::get('/whiteboard', 'Course\ScheduleWhiteboardController@viewWhiteboard');
+                Route::get('/whiteboard/get', 'Course\ScheduleWhiteboardController@getBoard');
+                Route::post('/whiteboard/save', 'Course\ScheduleWhiteboardController@saveBoard');
+                Route::get('/whiteboard/add_page', 'Course\ScheduleWhiteboardController@addPage');
+                Route::get('/whiteboard/download', 'Course\ScheduleWhiteboardController@downloadBoard');
                 
                 Route::post('/send_conversation', 'Course\ScheduleController@sendConversation');
                 Route::get('/conversations', 'Course\ScheduleController@viewConversations');
@@ -149,6 +154,11 @@ Route::group(['prefix' => 'student', 'middleware' => ['student']], function () {
 
     //profile
     Route::get('/profile', 'User\LoginUserController@getProfile');
+    Route::post('/profile/{user_id}', 'User\LoginUserController@updateProfileDetail');
+    Route::post('/profile/{user_id}/password', 'User\LoginUserController@updatePassword');
+
+
+
     Route::get('/api/teacher_list', 'Course\CourseController@teacherList');
 
     //---course

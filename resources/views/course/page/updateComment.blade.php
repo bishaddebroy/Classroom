@@ -1,13 +1,29 @@
 
-<form method = "post" action = "{{url($userType.'/courses/'.$commentData->course_id.'/comment/'.$commentData->id.'/update')}} ">                
-
-<form method="post" action="{{url('teacher/courses/'.$commentData->course_id.'/comment/'.$commentData->id.'/update')}} ">
+<style type="text/css">
+  .updateEditor .ck-editor__editable_inline {
+    min-height: 400px;
+  }
+</style>
+<div class="row updateEditor">
+<!-- <form id='comment_success'method = "post" action = "{{url($userType.'/courses/'.$commentData->course_id.'/comment/'.$commentData->id.'/update')}} "> -->
      @csrf
-		<div class="form-group">
-	   <textarea name="comment" rows="3" class="text-area-messge form-control"
-       placeholder="Create a Post" aria-required="true" aria-invalid="false">{{$commentData->comment}}</textarea >
+    <div class="form-group">
+       <div id="commentEditEditor"></div>
+    </div>
+     <div class="pull-right">
+       <button class="btn btn-danger" onclick="updateComment({{$commentData->id}})">Update Comment</button>
        </div>
-	   <div class="col-md-4 col-sm-4 col-1 pl-0 text-center send-btn">
-	  <button class="btn btn-danger">Post</button>
-	</div>
-    </form>
+</div>
+
+<script>
+  
+    ClassicEditor
+        .create( document.querySelector( '#commentEditEditor' ) )
+        .then( editor => {
+           commentEditor[{{$commentData->id}}] = editor; // Save for later use.
+           editor.setData('<?php echo $commentData->comment; ?>');
+      } )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
